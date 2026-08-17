@@ -1,0 +1,1457 @@
+/* -------------------------------------------------------------------------
+   ISPConfig modern theme
+   A contemporary restyle driven by CSS custom properties so that the whole
+   interface - including AJAX-loaded content - recolors instantly when the
+   light/dark class is toggled on <html>. No page reload required.
+   ------------------------------------------------------------------------- */
+
+:root {
+	/* Surfaces */
+	--bg: #eef2f7;
+	--bg-grad-1: #f4f7fb;
+	--bg-grad-2: #e7edf4;
+	--surface: #ffffff;
+	--surface-2: #f6f8fb;
+	--surface-3: #eef2f7;
+	--surface-hover: #f1f5fa;
+
+	/* Text */
+	--text: #26303a;
+	--text-strong: #141b22;
+	--text-muted: #6b7885;
+	--text-on-primary: #ffffff;
+
+	/* Lines */
+	--border: #e2e8ee;
+	--border-strong: #ccd5dd;
+	--border-dark: #b9c4ce;
+
+	/* Brand / accent */
+	--primary: #d11515;
+	--primary-hover: #e6171c;
+	--primary-dark: #a50d0d;
+	--accent: #2f7ed8;
+	--accent-hover: #1f6cc4;
+
+	/* Status */
+	--success: #2ea44f;
+	--success-bg: #e7f6ec;
+	--success-border: #b6e2c1;
+	--danger: #d11515;
+	--danger-bg: #fdecec;
+	--danger-border: #f5c9c9;
+	--info: #3a6ea5;
+	--info-bg: #e8f1fb;
+	--info-border: #cfe0f5;
+	--info-text: #3a6ea5;
+	--warning-bg: #fff7e6;
+	--warning-border: #ffe0a3;
+	--warning-text: #8a5a00;
+
+	/* Table header (kept dark for contrast in both modes) */
+	--thead-bg-1: #33424f;
+	--thead-bg-2: #222d38;
+	--thead-text: #ffffff;
+
+	/* Effects */
+	--shadow-sm: 0 1px 2px rgba(20, 40, 60, .06);
+	--shadow: 0 2px 10px rgba(20, 40, 60, .10), 0 1px 3px rgba(20, 40, 60, .06);
+	--shadow-lg: 0 14px 34px rgba(20, 40, 60, .16);
+	--focus-ring: 0 0 0 3px rgba(47, 126, 216, .22);
+	--radius: 12px;
+	--radius-md: 10px;
+	--radius-sm: 8px;
+	--transition: .2s ease;
+}
+
+html.dark {
+	--bg: #0a0f16;
+	--bg-grad-1: #0d131b;
+	--bg-grad-2: #070b11;
+	--surface: #151f29;
+	--surface-2: #1b2632;
+	--surface-3: #101821;
+	--surface-hover: #1f2c39;
+
+	--text: #dfe7ef;
+	--text-strong: #f2f6fa;
+	--text-muted: #93a1b0;
+	--text-on-primary: #ffffff;
+
+	--border: #26333f;
+	--border-strong: #38485a;
+	--border-dark: #4a5c70;
+
+	--primary: #ff414b;
+	--primary-hover: #ff5860;
+	--primary-dark: #d11515;
+	--accent: #5aa9ff;
+	--accent-hover: #7cbcff;
+
+	--success: #3fb950;
+	--success-bg: #122b1b;
+	--success-border: #1f4d2c;
+	--danger: #ff414b;
+	--danger-bg: #331417;
+	--danger-border: #5c2329;
+	--info: #7cb6ff;
+	--info-bg: #102434;
+	--info-border: #1e3f54;
+	--info-text: #8fc7ff;
+	--warning-bg: #33270f;
+	--warning-border: #5c461f;
+	--warning-text: #f2c869;
+
+	--thead-bg-1: #26333f;
+	--thead-bg-2: #172230;
+	--thead-text: #e6edf3;
+
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+	--shadow: 0 2px 12px rgba(0, 0, 0, .45);
+	--shadow-lg: 0 14px 34px rgba(0, 0, 0, .55);
+	--focus-ring: 0 0 0 3px rgba(90, 169, 255, .28);
+}
+
+/* Smooth recolor on theme switch (guarded to the key chrome, not the page) */
+body,
+#sidebar,
+.table-wrapper,
+.content-tab-wrapper,
+.content-tab-wrapper .nav-tabs,
+.modules li,
+.alert,
+.btn,
+.form-control,
+select.form-control,
+textarea.form-control,
+.panel,
+thead.dark,
+#footer,
+#main-navigation a,
+.pushy,
+.input-group-btn .btn,
+#searchform,
+#searchform button {
+	transition: background-color var(--transition), color var(--transition),
+		border-color var(--transition), box-shadow var(--transition);
+}
+
+/* ------------------------------ base --------------------------------- */
+body {
+	background: linear-gradient(180deg, var(--bg-grad-1), var(--bg-grad-2));
+	background-attachment: fixed;
+	color: var(--text);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+	transition: color var(--transition);
+}
+a:hover {
+	color: var(--accent-hover);
+}
+
+::selection {
+	background: var(--primary);
+	color: #fff;
+}
+
+/* Custom scrollbars ------------------------------------------------------ */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border-strong) transparent;
+}
+::-webkit-scrollbar {
+	width: 11px;
+	height: 11px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--border-strong);
+	border: 3px solid transparent;
+	background-clip: content-box;
+	border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--text-muted);
+	background-clip: content-box;
+}
+
+/* ------------------------------ header -------------------------------- */
+#inner-wrapper {
+	background: transparent;
+}
+
+#logo {
+	margin-top: 12px;
+}
+
+#headerbar {
+	background: transparent;
+}
+
+/* Theme toggle button in the header */
+.theme-toggle {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin-top: 16px;
+	margin-left: 12px;
+	padding: 0 !important;
+	float: right;
+	background: var(--surface);
+	color: var(--text-muted);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-sm);
+	transition: all var(--transition);
+}
+.theme-toggle:hover {
+	color: var(--accent);
+	border-color: var(--accent);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow);
+}
+.theme-toggle .icon {
+	font-size: 18px;
+	line-height: 1;
+	display: inline-flex;
+	width: 18px;
+	height: 18px;
+	transition: opacity .2s ease, transform .25s ease;
+}
+.theme-toggle .icon-sun {
+	display: none;
+}
+html.dark .theme-toggle .icon-moon {
+	display: none;
+}
+html.dark .theme-toggle .icon-sun {
+	display: inline-flex;
+}
+
+#logout-button {
+	float: right;
+	margin-top: 16px;
+	border-radius: var(--radius-md);
+	background: var(--danger);
+	border: none;
+	color: #fff;
+	box-shadow: var(--shadow-sm);
+}
+#logout-button:hover {
+	background: var(--primary-hover);
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: var(--shadow);
+}
+
+/* Global search ----------------------------------------------------------- */
+#searchform {
+	margin-top: 16px;
+}
+/* !important + id specificity so these override the white gradient that
+   #searchform button gets in theme.min.css */
+#searchform .form-control {
+	background: var(--surface) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius-md) 0 0 var(--radius-md) !important;
+}
+#searchform .form-control:hover,
+#searchform .form-control:focus {
+	background: var(--surface) !important;
+	border-color: var(--accent) !important;
+}
+#searchform .input-group-btn .btn,
+#searchform button {
+	background: var(--surface) !important;
+	color: var(--text-muted) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: 0 var(--radius-md) var(--radius-md) 0 !important;
+}
+#searchform .input-group-btn .btn:hover,
+#searchform button:hover {
+	background: var(--surface-2) !important;
+	color: var(--text) !important;
+}
+
+/* ---------------------------- top navigation -------------------------- */
+#main-navigation {
+	margin-top: 18px;
+}
+#main-navigation a {
+	position: relative;
+	background: transparent;
+	border: none !important;
+	border-bottom: none !important;
+	color: var(--text);
+	font-weight: 600;
+	letter-spacing: .2px;
+}
+#main-navigation a::after {
+	content: "";
+	position: absolute;
+	left: 18px;
+	right: 18px;
+	bottom: -6px;
+	height: 3px;
+	border-radius: 3px;
+	background: transparent;
+	transition: background var(--transition), box-shadow var(--transition);
+}
+#main-navigation a:hover {
+	color: var(--accent);
+	background: var(--surface-2) !important;
+}
+#main-navigation a.active {
+	color: var(--accent);
+	background: var(--surface-2) !important;
+}
+#main-navigation a.active::after {
+	background: var(--accent);
+	box-shadow: 0 2px 8px rgba(47, 126, 216, .35);
+}
+
+/* Give the desktop nav items a little more room at the bottom so the
+   underline sits clearly below the title text (mobile is a different
+   fixed-height layout and must stay untouched). */
+@media (min-width: 861px) {
+	#main-navigation a {
+		height: 88px;
+	}
+}
+#main-navigation .icon,
+#main-navigation .bi-icon {
+	color: var(--text-muted);
+	text-shadow: none;
+	font-size: 26px;
+	transition: color var(--transition);
+}
+#main-navigation a.active .icon,
+#main-navigation a.active .bi-icon,
+#main-navigation a:hover .icon,
+#main-navigation a:hover .bi-icon {
+	color: var(--accent);
+}
+
+/* ------------------------------ sidebar ------------------------------- */
+#sidebar {
+	margin-top: 18px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+	box-shadow: var(--shadow);
+}
+#sidebar header {
+	background: linear-gradient(180deg, var(--surface-2), var(--surface-3));
+	color: var(--text-strong);
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	border-bottom: 1px solid var(--border);
+}
+/* dark mode: submodule headings should read clearly darker */
+html.dark #sidebar header {
+	background: linear-gradient(180deg, #131c26, #0c141c);
+	color: var(--text);
+}
+#sidebar li {
+	border-top: 1px solid var(--border);
+}
+#sidebar a {
+	color: var(--text-muted);
+}
+#sidebar a:hover {
+	color: var(--accent);
+}
+
+/* ----------------------------- page header ---------------------------- */
+.page-header {
+	margin: 18px 0 10px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--border);
+	color: var(--text-strong);
+	font-weight: 600;
+}
+
+/* ------------------------------- alerts ------------------------------- */
+.alert {
+	border-radius: var(--radius-md);
+	border: 1px solid transparent;
+	box-shadow: var(--shadow-sm);
+}
+.alert-notification {
+	background: var(--info-bg);
+	border-color: var(--info-border);
+	color: var(--info-text);
+}
+.alert-notification a {
+	color: var(--accent);
+}
+.alert-notification a:hover {
+	color: var(--accent-hover);
+}
+.alert-danger {
+	background: var(--danger-bg);
+	border-color: var(--danger-border);
+	color: var(--danger);
+}
+.alert-danger a {
+	color: var(--danger);
+}
+.alert-success {
+	background: var(--success-bg);
+	border-color: var(--success-border);
+	color: var(--success);
+}
+.alert-warning {
+	background: var(--warning-bg);
+	border-color: var(--warning-border);
+	color: var(--warning-text);
+}
+
+/* ---------------------------- module cards ---------------------------- */
+.modules li {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-sm);
+	transition: transform var(--transition), box-shadow var(--transition),
+		border-color var(--transition);
+}
+.modules li:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow);
+	border-color: var(--border-strong);
+}
+.modules .icon,
+.modules .bi-icon {
+	color: var(--accent);
+}
+.modules .title {
+	color: var(--text-strong);
+}
+.modules .button {
+	background: var(--surface-2);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-bottom: 2px solid var(--border-strong);
+	border-radius: var(--radius-sm);
+}
+.modules .button:hover {
+	background: var(--surface-hover);
+}
+
+/* -------------------------------- buttons ----------------------------- */
+.btn {
+	border-radius: var(--radius-sm);
+	transition: all var(--transition);
+}
+.btn-default {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+.btn-default:hover {
+	background: var(--surface-hover);
+	border-color: var(--border-strong);
+	color: var(--text-strong);
+}
+.btn-primary {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: #fff;
+}
+.btn-primary:hover {
+	background: var(--accent-hover);
+	border-color: var(--accent-hover);
+	color: #fff;
+}
+.btn-success {
+	background: var(--success);
+	border-color: var(--success);
+	color: #fff;
+}
+.btn-success:hover {
+	filter: brightness(.95);
+}
+.btn-danger {
+	background: var(--danger);
+	border-color: var(--danger);
+	color: #fff;
+}
+.btn-danger:hover {
+	background: var(--primary-hover);
+	border-color: var(--primary-hover);
+	color: #fff;
+}
+
+.formbutton-default {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-bottom-width: 2px;
+}
+.formbutton-default:hover,
+.formbutton-default.active {
+	background: var(--surface-hover);
+	color: var(--text-strong);
+}
+.formbutton-success {
+	background: var(--success);
+	border-color: var(--success);
+	color: #fff;
+}
+.formbutton-success:hover,
+.formbutton-success.active {
+	filter: brightness(.95);
+	color: #fff;
+}
+.formbutton-danger {
+	background: var(--danger);
+	border-color: var(--danger);
+	color: #fff;
+}
+.formbutton-danger:hover,
+.formbutton-danger.active {
+	background: var(--primary-hover);
+	color: #fff;
+}
+
+/* ------------------------------- forms ------------------------------- */
+.form-control {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-sm);
+	transition: border-color var(--transition), box-shadow var(--transition),
+		background-color var(--transition);
+}
+.form-control:hover {
+	border-color: var(--border-strong);
+}
+.form-control:focus {
+	background: var(--surface);
+	color: var(--text-strong);
+	border-color: var(--accent);
+	box-shadow: var(--focus-ring);
+	outline: none;
+}
+label {
+	color: var(--text);
+}
+.control-label {
+	color: var(--text-muted);
+}
+.form-group .control-label {
+	color: var(--text-muted);
+}
+.form-horizontal .control-label {
+	color: var(--text-muted);
+}
+
+/* ---------------------------- content tabs ---------------------------- */
+.content-tab-wrapper {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+.content-tab-wrapper .nav-tabs {
+	background: var(--surface-2);
+	border: none;
+	box-shadow: none;
+}
+.content-tab-wrapper .nav-tabs > li > a {
+	background: var(--surface-2);
+	color: var(--text-muted);
+	border: none !important;
+	border-right: 1px solid var(--border) !important;
+	font-weight: 600;
+}
+.content-tab-wrapper .nav-tabs > li > a:hover {
+	background: var(--surface-3);
+	color: var(--text-strong);
+}
+.content-tab-wrapper .nav-tabs > li.active > a,
+.content-tab-wrapper .nav-tabs .active a {
+	background: var(--surface) !important;
+	color: var(--accent);
+}
+
+.tab-content {
+	background: var(--surface);
+}
+
+/* -------------------------------- tables ----------------------------- */
+.table-wrapper {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+.table {
+	color: var(--text);
+}
+.table caption {
+	color: var(--text-strong);
+	border-bottom: 1px solid var(--border);
+}
+.table thead th,
+.table thead td {
+	border-bottom: 1px solid var(--border);
+	color: var(--text-muted);
+	font-weight: 600;
+}
+.table tbody tr {
+	border-top: 1px solid var(--border);
+}
+.table tbody tr,
+.table tbody tr:nth-child(odd),
+.table tbody tr:nth-child(even) {
+	background: var(--surface);
+}
+.table tbody tr:hover {
+	background: var(--surface-hover);
+}
+.table td {
+	color: var(--text);
+}
+.table-striped tbody tr:nth-child(odd) {
+	background: var(--surface-2);
+}
+.table-hover tbody tr:hover {
+	background: var(--surface-hover);
+}
+
+thead.dark {
+	height: 46px;
+	background: linear-gradient(180deg, var(--thead-bg-1), var(--thead-bg-2)) !important;
+	color: var(--thead-text);
+}
+thead.dark th {
+	line-height: 46px;
+	font-weight: 600;
+}
+thead.dark th[data-column][data-ordered] {
+	background: linear-gradient(180deg, var(--accent), var(--accent-hover)) !important;
+	color: #fff;
+}
+
+.tfooter {
+	background: var(--surface-2);
+	border-top: 1px solid var(--border);
+	color: var(--text-muted);
+}
+
+/* ------------------------------ pagination --------------------------- */
+.pagination {
+	margin: 12px 0;
+}
+.pagination > li > a,
+.pagination > li > span {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+.pagination > li > a:hover {
+	background: var(--surface-hover);
+	color: var(--text-strong);
+	border-color: var(--border-strong);
+}
+.pagination > li.active > a,
+.pagination > li.active > span {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: #fff;
+}
+
+/* ------------------------------- progress --------------------------- */
+.progress {
+	background: var(--surface-3);
+	border-radius: var(--radius-sm);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .06);
+}
+html.dark .progress {
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4);
+}
+.progress .progress-bar {
+	background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+	box-shadow: none;
+	color: #fff;
+	border-radius: var(--radius-sm);
+}
+
+/* ------------------------------ footer ------------------------------ */
+#footer {
+	border-top: 1px solid var(--border);
+	color: var(--text-muted);
+}
+#footer a {
+	color: var(--accent);
+}
+
+/* ----------------------------- modal (Bootstrap) -------------------- */
+.modal-content {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-lg);
+}
+.modal-header {
+	background: var(--surface-2);
+	border-bottom: 1px solid var(--border);
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+}
+.modal-title {
+	color: var(--text-strong);
+}
+.modal-body {
+	color: var(--text);
+}
+.modal-body ul li {
+	color: var(--text);
+}
+.modal-footer {
+	background: var(--surface-2);
+	border-top: 1px solid var(--border);
+}
+.modal-backdrop {
+	background: rgba(0, 0, 0, .45);
+}
+.modal .close {
+	color: var(--text-muted);
+	text-shadow: none;
+	opacity: 1;
+}
+.modal .close:hover {
+	color: var(--text-strong);
+}
+
+/* --------------------------- dropdowns / menus ---------------------- */
+.dropdown-menu {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-lg);
+}
+.dropdown-menu > li > a {
+	color: var(--text);
+}
+.dropdown-menu > li > a:hover {
+	background: var(--surface-hover);
+	color: var(--text-strong);
+}
+.dropdown-menu > li > a:active {
+	background: var(--accent);
+	color: #fff;
+}
+.dropdown-menu > li.disabled > a {
+	color: var(--text-muted);
+}
+.dropdown-divider {
+	background: var(--border);
+}
+
+/* ------------------------------ tooltips --------------------------- */
+.tooltip-inner {
+	background: var(--surface-strong, var(--surface));
+	background: var(--thead-bg-2);
+	color: #fff;
+	border-radius: var(--radius-sm);
+}
+.tooltip-arrow {
+	border-top-color: var(--thead-bg-2);
+}
+
+/* ------------------------------- select2 --------------------------- */
+/* select2 v3 (classic) + v4 compatible overrides. theme.modern.css is
+   loaded last, so these win over select2.css / select2-bootstrap.css. */
+.select2-container .select2-choice,
+.select2-container .select2-chosen {
+	background: var(--surface) !important;
+	color: var(--text) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius-sm) !important;
+}
+.select2-container .select2-choice .select2-chosen {
+	color: var(--text);
+}
+.select2-container .select2-choice .select2-arrow {
+	display: none !important;
+}
+.select2-container .select2-choice .select2-arrow b {
+	background: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+/* dropdown list (v3 .select2-drop / v4 .select2-dropdown) */
+.select2-drop,
+.select2-container--open .select2-dropdown,
+.select2-results {
+	background: var(--surface) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius-sm) !important;
+	box-shadow: var(--shadow) !important;
+}
+.select2-drop-mask {
+	background: rgba(0, 0, 0, .2) !important;
+}
+.select2-search {
+	background: var(--surface) !important;
+	border-bottom: 1px solid var(--border) !important;
+	padding: 8px 12px !important;
+}
+.select2-search input {
+	background: var(--surface) !important;
+	color: var(--text) !important;
+	border: 1px solid var(--border) !important;
+}
+.select2-results .select2-result,
+.select2-results li {
+	color: var(--text);
+}
+.select2-results .select2-highlighted {
+	background: var(--surface-hover) !important;
+	color: var(--accent);
+}
+.select2-results .select2-disabled {
+	color: var(--text-muted);
+}
+
+/* ------------ other elements with hardcoded whites (ispconfig / theme.min) - */
+ul.df-resultbox,
+ul.gs-resultbox {
+	background: var(--surface) !important;
+	color: var(--text);
+	box-shadow: var(--shadow-lg);
+}
+ul.df-resultbox li,
+ul.gs-resultbox li,
+ul.df-resultbox li p,
+ul.gs-resultbox li p {
+	color: var(--text);
+}
+ul.df-resultbox li:nth-child(even),
+ul.gs-resultbox li:nth-child(even) {
+	background: var(--surface-2) !important;
+}
+ul.df-resultbox li.df-cheader,
+ul.gs-resultbox li.gs-cheader {
+	background: var(--surface) !important;
+}
+#ajaxloader {
+	background-color: var(--surface);
+	border-color: var(--border-strong);
+}
+/* second (filter) row of a table header is a light gradient in theme.min.css */
+thead.dark tr:nth-child(2) {
+	background: linear-gradient(to bottom, var(--surface-2), var(--surface-3)) !important;
+	color: var(--text-muted);
+}
+
+/* --------------------------- datetime picker ----------------------- */
+.datetimepicker {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-lg);
+}
+.datetimepicker .datetimepicker-days tbody td:hover,
+.datetimepicker .datetimepicker-hours tbody td:hover,
+.datetimepicker .datetimepicker-minutes tbody td:hover {
+	background: var(--surface-hover);
+}
+.datetimepicker .datetimepicker-days tbody td.active,
+.datetimepicker .datetimepicker-hours tbody td.active,
+.datetimepicker .datetimepicker-minutes tbody td.active {
+	background: var(--accent);
+	color: #fff;
+}
+.datetimepicker table td span {
+	background: var(--surface-2);
+}
+.datetimepicker .datetimepicker-active {
+	background: var(--accent) !important;
+	color: #fff !important;
+}
+
+/* -------------------------------- panels --------------------------- */
+.panel {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+.panel-heading {
+	/* !important overrides the inline gradient on the login page so it
+	   recolors in dark mode */
+	background: linear-gradient(180deg, var(--surface-2), var(--surface-3)) !important;
+	color: var(--text-strong);
+	border-bottom: 1px solid var(--border);
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+}
+.panel-body {
+	color: var(--text);
+}
+.panel-footer {
+	background: var(--surface-2);
+	border-top: 1px solid var(--border);
+}
+
+/* --------------------------- off-canvas (pushy) ------------------- */
+.pushy {
+	background: var(--surface);
+	border-right: 1px solid var(--border);
+}
+.pushy a {
+	color: var(--text-muted);
+}
+.pushy a:hover,
+.pushy a.active {
+	background: var(--surface-3);
+	color: var(--accent);
+}
+.site-overlay {
+	background: rgba(0, 0, 0, .4);
+}
+
+/* ------------------------------ login page ------------------------- */
+body .container {
+	background: transparent;
+}
+
+/* Floating theme toggle on the login screen (no headerbar there) */
+.theme-toggle-float {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	float: none;
+	margin: 0;
+	z-index: 1030;
+}
+
+.login-panel {
+	max-width: 420px;
+	margin: auto;
+}
+.login-panel .panel-heading {
+	padding: 26px 20px;
+}
+
+/* ------------------------------ misc ------------------------------- */
+.field {
+	color: var(--text);
+}
+.green {
+	color: var(--success);
+}
+.red {
+	color: var(--danger);
+}
+.gray {
+	color: var(--text-muted);
+}
+.inlineLabel {
+	color: var(--text-muted);
+}
+.help-block {
+	color: var(--text-muted);
+}
+
+/* copy-to-clipboard icon recolor in dark mode */
+html.dark .copy-to-clipboard-icon::after {
+	color: var(--accent-hover);
+}
+
+/* datalog notification bubble kept vivid in both modes */
+.notification {
+	background: var(--primary);
+	color: #fff;
+}
+
+/* --------------------- catch-all: keep common surfaces non-white ----
+   theme.modern.css loads LAST, so these (plain specificity) win over
+   the plain-white rules in bootstrap / ispconfig.css / theme.min.css
+   while the earlier !important modifiers still win over these. -------- */
+.btn {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+input,
+textarea,
+select {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+table {
+	background: var(--surface);
+}
+table > thead {
+	background: var(--surface-2);
+	color: var(--text);
+}
+code,
+pre,
+kbd,
+samp {
+	background: var(--surface-2);
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+.well,
+.block {
+	background: var(--surface-2);
+	border: 1px solid var(--border);
+	color: var(--text);
+}
+.list-group {
+	background: var(--surface);
+}
+.list-group-item {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	color: var(--text);
+}
+.badge {
+	background: var(--surface-2);
+	color: var(--text);
+}
+.label {
+	color: #fff;
+}
+.nav-pills > li > a {
+	background: var(--surface-2);
+	border: 1px solid var(--border);
+	color: var(--text);
+	border-radius: var(--radius-sm);
+}
+.nav-pills > li.active > a {
+	background: var(--accent);
+	color: #fff;
+}
+.panel,
+.panel-body,
+.tab-content {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	color: var(--text);
+}
+.dropdown-menu {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	color: var(--text);
+}
+blockquote {
+	background: var(--surface-2);
+	border-left: 3px solid var(--accent);
+	color: var(--text);
+}
+#passBar {
+	background: var(--surface-2);
+}
+
+/* -------------------- loading animation (transparent) ---------------
+   The old #loading / #ajaxloader used an opaque (white) image. Replace
+   it with a pure-CSS spinner that has a fully transparent background. */
+#loading {
+	display: inline-block !important;
+	width: 26px !important;
+	height: 26px !important;
+	margin: 6px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: 3px solid var(--border) !important;
+	border-top-color: var(--accent) !important;
+	border-radius: 50% !important;
+	vertical-align: middle !important;
+	animation: ispc-loading-spin .8s linear infinite !important;
+}
+@keyframes ispc-loading-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+html.dark #loading {
+	border-color: var(--border-strong) !important;
+	border-top-color: var(--accent-hover) !important;
+}
+#ajaxloader {
+	background-color: transparent !important;
+	background-image: none !important;
+}
+#ajaxloader::after {
+	content: "";
+	display: block;
+	width: 26px;
+	height: 26px;
+	margin: 12px auto;
+	border: 3px solid var(--border);
+	border-top-color: var(--accent);
+	border-radius: 50%;
+	animation: ispc-loading-spin .8s linear infinite;
+}
+html.dark #ajaxloader::after {
+	border-color: var(--border-strong);
+	border-top-color: var(--accent-hover);
+}
+
+/* =================== dark horizontal lines -> dark =================== */
+/* In dark mode these borders read as bright/white lines; darken them. */
+html.dark {
+	--border: #161f29;
+	--border-strong: #232f3a;
+	--border-dark: #39495b;
+}
+hr {
+	border: 1px solid var(--border) !important;
+	opacity: 1 !important;
+	height: 0 !important;
+	margin: 8px 0 !important;
+}
+html.dark hr,
+html.dark .page-header,
+html.dark .tfooter,
+html.dark #footer,
+html.dark .modal-footer,
+html.dark .content-tab-wrapper,
+html.dark table,
+html.dark table th,
+html.dark table td {
+	border-color: #161f29 !important;
+}
+
+/* ============ select2 - full clean redesign (v3 + v4) ============ */
+.select2-container {
+	vertical-align: middle;
+}
+.select2-container .select2-choice,
+.select2-container .select2-choices {
+	background: var(--surface) !important;
+	background-image: none !important;
+	color: var(--text) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius-md) !important;
+	height: 42px !important;
+	line-height: 40px !important;
+	padding: 0 12px !important;
+	box-shadow: var(--shadow-sm) !important;
+}
+.select2-container .select2-choice .select2-chosen {
+	color: var(--text) !important;
+	line-height: 40px !important;
+	opacity: 1 !important;
+}
+.select2-container .select2-choice .select2-arrow,
+.select2-container .select2-choice .select2-arrow b {
+	display: none !important;
+}
+.select2-container .select2-choice abbr {
+	display: inline-block !important;
+	width: 18px !important;
+	height: 18px !important;
+	margin: 0 0 0 8px !important;
+	border: none !important;
+	background: transparent !important;
+	opacity: .55 !important;
+}
+.select2-container .select2-choice abbr:hover {
+	opacity: 1 !important;
+}
+.select2-container.select2-dropdown-open .select2-choice,
+.select2-container.select2-dropdown-open .select2-choices {
+	border-color: var(--accent) !important;
+	border-bottom: 0 !important;
+	border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+	box-shadow: none !important;
+}
+.select2-container .select2-container-active .select2-choice {
+	border-color: var(--accent) !important;
+}
+.select2-drop-mask {
+	background: rgba(0, 0, 0, .2) !important;
+}
+.select2-drop,
+.select2-drop-top,
+.select2-drop-adjacent,
+.select2-container--open .select2-dropdown {
+	background: var(--surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius-md) !important;
+	box-shadow: var(--shadow-lg) !important;
+	color: var(--text) !important;
+	margin: 0 !important;
+}
+.select2-drop-top {
+	border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+}
+.select2-drop .select2-search,
+.select2-search {
+	background: var(--surface) !important;
+	background-image: none !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--border) !important;
+	margin: 0 !important;
+	padding: 8px 12px !important;
+}
+.select2-search input,
+.select2-drop .select2-search input {
+	background: transparent !important;
+	color: var(--text) !important;
+	border: 0 !important;
+	margin: 0 !important;
+	padding: 4px 6px !important;
+	font-size: 13px !important;
+}
+.select2-results {
+	background: transparent !important;
+	margin: 4px 0 8px !important;
+	color: var(--text) !important;
+}
+.select2-results li,
+.select2-results .select2-result {
+	background: transparent !important;
+	color: var(--text) !important;
+	padding: 8px 12px !important;
+	font-size: 13px !important;
+	line-height: 1.3 !important;
+}
+.select2-results .select2-highlighted {
+	background: var(--surface-hover) !important;
+	color: var(--accent) !important;
+	cursor: pointer;
+}
+.select2-results .select2-disabled {
+	color: var(--text-muted) !important;
+}
+.select2-results .select2-selected {
+	opacity: .6 !important;
+}
+
+/* ------------- loading window: transparent + blurred --------------
+   Frosted-glass look: the area that holds the spinner becomes a
+   translucent, blurred backdrop instead of a solid white box. ------ */
+#ajaxloader {
+	background: rgba(125, 132, 140, .18) !important;
+	background-color: rgba(125, 132, 140, .18) !important;
+	background-image: none !important;
+	background-clip: padding-box !important;
+	opacity: 1 !important;
+	backdrop-filter: blur(8px) saturate(1.2) !important;
+	-webkit-backdrop-filter: blur(8px) saturate(1.2) !important;
+}
+html.dark #ajaxloader {
+	background: rgba(9, 13, 20, .38) !important;
+	background-color: rgba(9, 13, 20, .38) !important;
+	backdrop-filter: blur(10px) saturate(1.2) !important;
+	-webkit-backdrop-filter: blur(10px) saturate(1.2) !important;
+}
+/* if a full loading modal/backdrop is used instead */
+.modal-backdrop {
+	background: rgba(0, 0, 0, .35) !important;
+	backdrop-filter: blur(4px) !important;
+	-webkit-backdrop-filter: blur(4px) !important;
+}
+
+/* ---- select2: shorter height (match form controls) + chevron ----
+   The choice had a fixed 42px height and no arrow. Make it 34px (same
+   as .form-control) and draw a down-pointing chevron on the right. */
+.select2-container .select2-choice,
+.select2-container .select2-choices {
+	position: relative !important;
+	height: 34px !important;
+	min-height: 0 !important;
+	line-height: 32px !important;
+	padding: 0 34px 0 12px !important;
+	box-shadow: var(--shadow-sm) !important;
+}
+.select2-container .select2-choice .select2-chosen {
+	line-height: 32px !important;
+}
+/* chevron */
+.select2-container .select2-arrow {
+	display: block !important;
+	position: absolute !important;
+	right: 12px !important;
+	left: auto !important;
+	top: 50% !important;
+	margin: -3px 0 0 0 !important;
+	width: 0 !important;
+	height: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	border-left: 5px solid transparent !important;
+	border-right: 5px solid transparent !important;
+	border-top: 6px solid var(--text-muted) !important;
+}
+.select2-container .select2-arrow b {
+	display: none !important;
+}
+/* flip the chevron when the dropdown is open */
+.select2-container.select2-dropdown-open .select2-arrow,
+.select2-container.select2-open .select2-arrow {
+	border-top: 0 !important;
+	border-bottom: 6px solid var(--text-muted) !important;
+}
+.select2-container .select2-choice:hover .select2-arrow {
+	border-top-color: var(--accent) !important;
+}
+html.dark .select2-container .select2-choice:hover .select2-arrow {
+	border-top-color: var(--accent-hover) !important;
+}
+
+/* ---------------------- respect reduced motion --------------------- */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+		animation: none !important;
+	}
+	.notification {
+		animation: none !important;
+	}
+}
+
+/* ---- select2: robust height + chevron (overrides everything above) --
+   select2 v3's .select2-arrow carries a gray #ccc background and a <b>
+   child with an !important background-image, so styling it directly is
+   unreliable. Hide it entirely and draw the chevron with ::after instead. */
+.select2-container .select2-choice,
+.select2-container .select2-choices {
+	position: relative !important;
+	height: 28px !important;
+	min-height: 0 !important;
+	line-height: 26px !important;
+	padding: 0 34px 0 12px !important;
+	background: var(--surface) !important;
+	background-color: var(--surface) !important;
+	background-image: none !important;
+	box-shadow: var(--shadow-sm) !important;
+}
+.select2-container .select2-choice .select2-chosen {
+	line-height: 26px !important;
+}
+/* open state too */
+.select2-dropdown-open .select2-choice,
+.select2-dropdown-open .select2-choices {
+	background: var(--surface) !important;
+	background-color: var(--surface-2) !important;
+	background-image: none !important;
+}
+/* hide the fragile internal arrow + its (background-imaged) <b> child */
+.select2-container .select2-choice .select2-arrow,
+.select2-container .select2-choices .select2-arrow,
+.select2-dropdown-open .select2-choice .select2-arrow {
+	display: none !important;
+}
+/* clean down-pointing chevron on the right */
+.select2-container .select2-choice::after,
+.select2-container .select2-choices::after {
+	content: "" !important;
+	position: absolute !important;
+	right: 12px !important;
+	left: auto !important;
+	top: 50% !important;
+	width: 0 !important;
+	height: 0 !important;
+	margin-top: -3px !important;
+	border-left: 5px solid transparent !important;
+	border-right: 5px solid transparent !important;
+	border-top: 6px solid var(--text-muted) !important;
+	pointer-events: none !important;
+}
+/* flip the chevron when the dropdown is open */
+.select2-container.select2-dropdown-open .select2-choice::after,
+.select2-container.select2-open .select2-choice::after {
+	border-top: 0 !important;
+	border-bottom: 6px solid var(--text-muted) !important;
+}
+.select2-container .select2-choice:hover::after {
+	border-top-color: var(--accent) !important;
+}
+html.dark .select2-container .select2-choice:hover::after {
+	border-top-color: var(--accent-hover) !important;
+}
+
+/* light mode only: the select2 border renders gray on white and looks
+   ugly; drop it (the subtle box-shadow still defines the edge).
+   Dark mode keeps its border via the rules above. */
+:root:not(.dark) .select2-container .select2-choice,
+:root:not(.dark) .select2-container .select2-choices {
+	border-color: transparent !important;
+}
+
+/* light mode only: the opened dropdown list and its search divider still
+   carried a gray border (--border); make it transparent like the choice.
+   Dark mode keeps its border (which looks fine on the dark surface). */
+:root:not(.dark) .select2-drop,
+:root:not(.dark) .select2-drop-top,
+:root:not(.dark) .select2-drop-adjacent,
+:root:not(.dark) .select2-container--open .select2-dropdown {
+	border-color: transparent !important;
+}
+:root:not(.dark) .select2-drop .select2-search,
+:root:not(.dark) .select2-search {
+	border-color: transparent !important;
+}
+:root:not(.dark) .select2-drop-above {
+	border-top-color: transparent !important;
+}
+
+/* light mode: nuke ANY remaining gray hairline or gray inner rounded
+   rectangle on the select2. Make background / border / shadow / gradient
+   transparent on every layer (container, choice, choices, chosen, arrow,
+   drop, results, result, search). Dark mode is unaffected. */
+:root:not(.dark) .select2-container,
+:root:not(.dark) .select2-container .select2-choice,
+:root:not(.dark) .select2-container .select2-choices,
+:root:not(.dark) .select2-container .select2-chosen,
+:root:not(.dark) .select2-container .select2-arrow,
+:root:not(.dark) .select2-container .select2-dropdown,
+:root:not(.dark) .select2-drop,
+:root:not(.dark) .select2-drop-top,
+:root:not(.dark) .select2-drop-adjacent,
+:root:not(.dark) .select2-drop .select2-results,
+:root:not(.dark) .select2-drop .select2-result,
+:root:not(.dark) .select2-results,
+:root:not(.dark) .select2-result,
+:root:not(.dark) .select2-search,
+:root:not(.dark) .select2-search input {
+	background: var(--surface) !important;
+	background-color: var(--surface) !important;
+	background-image: none !important;
+	border-color: transparent !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+/* light mode only: give the dropdown a clean 1px gray outer border
+   (the ugly gray gradient/lines are already gone; this is just an edge). */
+:root:not(.dark) .select2-container .select2-choice,
+:root:not(.dark) .select2-container .select2-choices,
+:root:not(.dark) .select2-drop {
+	border: 1px solid var(--border) !important;
+}
+/* light mode: hovered result = light background + blue text (readable).
+   Higher specificity + later than the white-background override above. */
+:root:not(.dark) .select2-results .select2-highlighted {
+	background: var(--surface-hover) !important;
+	color: var(--accent) !important;
+}
